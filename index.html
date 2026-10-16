@@ -25,11 +25,28 @@
   </style>
 </head>
 <body>
-  <iframe id="checkout-app-iframe" src="" allow="payment"></iframe>
+  <iframe id="checkout-app-iframe" src="https://script.google.com/macros/s/AKfycbw8NpzNrggY-tL_DAGac1q05nUTjpzKtIhUhm2NYX46OiohIjA7qn51ggNEaDleuHY2/exec" allow="payment"></iframe>
 
   <script>
-    const baseUrl = "https://script.google.com/macros/s/AKfycbw8NpzNrggY-tL_DAGac1q05nUTjpzKtIhUhm2NYX46OiohIjA7qn51ggNEaDleuHY2/exec";
-    document.getElementById("checkout-app-iframe").src = baseUrl + window.location.search;
+    const iframe = document.getElementById("checkout-app-iframe");
+    const urlParams = new URLSearchParams(window.location.search);
+    const vyroUserId = urlParams.get("vyro_user_id") || "";
+    const amount = urlParams.get("amount") || "";
+
+    // Forward parameters directly via postMessage when iframe finishes loading
+    iframe.onload = function() {
+      iframe.contentWindow.postMessage({
+        vyro_user_id: vyroUserId,
+        amount: amount
+      }, "*");
+    };
+
+    // Relay messages from parent SMM Panel window if received
+    window.addEventListener("message", function(event) {
+      if (event.data && (event.data.vyro_user_id || event.data.amount)) {
+        iframe.contentWindow.postMessage(event.data, "*");
+      }
+    });
   </script>
 </body>
 </html>
