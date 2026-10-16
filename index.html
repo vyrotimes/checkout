@@ -25,6 +25,11 @@
   </style>
 </head>
 <body>
-  <iframe src="https://script.google.com/macros/s/AKfycbw8NpzNrggY-tL_DAGac1q05nUTjpzKtIhUhm2NYX46OiohIjA7qn51ggNEaDleuHY2/exec" allow="payment"></iframe>
+  <iframe id="checkout-app-iframe" src="" allow="payment"></iframe>
+
+  <script>
+    const baseUrl = "https://script.google.com/macros/s/AKfycbw8NpzNrggY-tL_DAGac1q05nUTjpzKtIhUhm2NYX46OiohIjA7qn51ggNEaDleuHY2/exec";
+    document.getElementById("checkout-app-iframe").src = baseUrl + window.location.search;
+  </script>
 </body>
 </html>
